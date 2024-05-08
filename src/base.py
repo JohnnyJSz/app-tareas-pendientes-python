@@ -3,5 +3,8 @@ class Todo:
     self.text = text
     self.is_completed = is_completed
   
-  def show_todo(self):
-    print(self.text)
+  def get_todo(self):
+    return self.text
+  
+  def get_is_completed(self):
+    return self.is_completed
