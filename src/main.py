@@ -24,12 +24,41 @@ def main():
 
   def delete_todo(): #?DONE
     print('* Borrar una tarea')
-    try:
-      delete_todo_index = int(input('Introduce el indice de la tarea a eliminar: '))
-      todo_list.remove(todo_list[delete_todo_index])
-      print('La tarea se ha eliminado correctamente.')
-    except ValueError:
-      print('Ese indice no es correcto (No esta presente en la lista de tareas). Por favor introduce otro indice.')
+    # Uso un bucle con True para ejecutar el bloque las veces necesarias hasta llegar
+    # a una potencial salida usando break, que se dara cuando se consiga borrar una tarea.
+    while True:
+      try:
+        delete_todo_index = input('\tIntroduce el indice de la tarea a eliminar o escribre "salir" para volver al menu: ')
+        # Verificar si el valor introducido es alfanumerico y distinto de la cadena de texto 'salir'
+        if delete_todo_index.isalpha() and delete_todo_index != 'salir':
+          # Si es asi, levantamos una excepcion de tipo ValueError con un mensaje customizado
+          raise ValueError(f'Valor de indice "{delete_todo_index}" no valido. Prueba otra vez.')
+        # Verificar si el valor introducido es alfanumerico e igual a la cadena de texto 'salir'
+        if delete_todo_index.isalpha() and delete_todo_index == 'salir':
+          # Si es asi, mostramos un mensaje informativo y salimos del bucle con break.
+          print('\tVolviendo al menu principal')
+          break
+        else:
+          # Si no, ejecutamos nuestra logica
+
+          # Convertimos el indice a un tipo integer
+          delete_todo_index = int(delete_todo_index)
+      
+          # Verifica si el indice no esta dentro del rango de indices de la lista
+          if delete_todo_index < 0 or delete_todo_index >= len(todo_list):
+            # Si es asi, levantamos una excepcion de tipo IndexError con un mensaje customizado
+            raise IndexError(f'No hay tareas con indice {delete_todo_index}. Prueba otra vez.')
+          
+          # Si el indice es correcto (existe un elemento en la lista con dicho indice), eliminarlo y salir.
+          todo_list.remove(todo_list[delete_todo_index])
+          print('\tLa tarea se ha eliminado correctamente.')
+          break
+      except ValueError as ve:
+        print('\tValueError: ',ve)
+      except IndexError as ie:
+        print('\tIndexError: ',ie)
+      except Exception as e:
+        print('\tException: ',e)
 
   def exit(): #?DONE
     print('Salir de la aplicacion seleccionado')
@@ -60,7 +89,7 @@ def main():
   show_options_menu()
   while option_selected != 7:
     try:
-      option_selected = int(input('Elige una opcion: '))
+      option_selected = int(input('(Menu Principal) Elige una opcion: '))
       if option_selected in switcher:
         switcher[option_selected]()
       else:
