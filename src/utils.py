@@ -3,6 +3,7 @@ from base import Todo
 def add_new_todo(list):
     new_todo = Todo(input('\tIntroduce tu tarea: '))
     list.append(new_todo)
+    print(f'\tLa tarea [{new_todo.get_todo()}] se ha añadido correctamente.')
 
 def delete_todo(list):
     show_all_todos(list)
