@@ -1,12 +1,11 @@
 from base import Todo
 
 def add_new_todo(list):
-    print('* Agregar una nueva tarea')
     new_todo = Todo(input('\tIntroduce tu tarea: '))
     list.append(new_todo)
 
 def delete_todo(list):
-    print('* Borrar una tarea')
+    show_all_todos(list)
     # Uso un bucle con True para ejecutar el bloque las veces necesarias hasta llegar
     # a una potencial salida usando break, que se dara cuando se consiga borrar una tarea.
     while True:
@@ -33,9 +32,10 @@ def delete_todo(list):
             # Si es asi, levantamos una excepcion de tipo IndexError con un mensaje customizado
             raise IndexError(f'No hay tareas con índice {index}. Prueba otra vez.')
           
+          todo_text = list[index].get_todo()
           # Si el índice es correcto (existe un elemento en la lista con dicho índice), eliminarlo y salir.
           list.remove(list[index])
-          print('\tLa tarea se ha eliminado correctamente.')
+          print(f'\tLa tarea [{todo_text}] se ha eliminado correctamente.')
           break
       except ValueError as ve:
         print('\tValueError: ',ve)
@@ -45,17 +45,20 @@ def delete_todo(list):
         print('\tException: ',e)
 
 def show_all_todos(list):
-  print('* Lista de tareas')
   if len(list) == 0:
     print('\tNo hay tareas')
   else:
     for index, todo in enumerate(list):
       print(f'\t[{index}] {todo.get_todo()} - id({todo.get_id()}) - ({'completado' if todo.get_is_completed() == True else 'pendiente'})')
       
-def show_main_menu():
-  print('* Menu principal')
-  print('''\t[1] - Agregar una nueva tarea
-  \t[4] - Mostrar todas las tareas
-  \t[5] - Eliminar una tarea
-  \t[6] - Mostrar el menu principal
-  \t[salir] - Escribe "salir" para terminar el programa.''')
+def show_main_menu(list):
+  if len(list) == 0:
+    print('''\t[1] - Agregar una nueva tarea
+    \t[6] - Mostrar el menu principal
+    \t[salir] - Escribe "salir" para terminar el programa.''')
+  else:
+    print('''\t[1] - Agregar una nueva tarea
+    \t[4] - Mostrar todas las tareas
+    \t[5] - Eliminar una tarea
+    \t[6] - Mostrar el menu principal
+    \t[salir] - Escribe "salir" para terminar el programa.''')

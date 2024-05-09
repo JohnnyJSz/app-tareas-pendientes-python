@@ -1,3 +1,14 @@
+class MenuOption:
+  def __init__(self, label, action) -> None:
+    self.label = label
+    self.action = action
+  
+  def get_label(self):
+    return self.label
+  
+  def execute_action(self):
+    self.action()
+
 class Todo:
   # Variable de clase para realizar un seguimiento del ID
   last_id = 0
