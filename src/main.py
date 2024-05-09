@@ -1,5 +1,5 @@
 from base import MenuOption, Todo
-from utils import add_new_todo, delete_todo, show_all_todos, show_main_menu
+from utils import add_new_todo, modify_todo, show_all_todos, delete_todo, show_main_menu
 
 def main():
   todo_list: Todo = list()
@@ -7,11 +7,10 @@ def main():
   # Diccionario de opciones usando instancias de la clase MenuOption
   menu_option_switcher = {
     1: MenuOption('* Agregar una nueva tarea', lambda: add_new_todo(todo_list)),
-    # 2: mark_as_pending,
-    # 3: mark_as_complete,
-    4: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list)),
-    5: MenuOption('* Borrar una tarea', lambda: delete_todo(todo_list)),
-    6: MenuOption('* Menu principal', lambda: show_main_menu(todo_list)),
+    2: MenuOption('* Modificar una tarea', lambda: modify_todo(todo_list)),
+    3: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list)),
+    4: MenuOption('* Borrar una tarea', lambda: delete_todo(todo_list)),
+    5: MenuOption('* Menu principal', lambda: show_main_menu(todo_list)),
   }
 
   print('\t** Bienvenido/a **')

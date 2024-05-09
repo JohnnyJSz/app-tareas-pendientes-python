@@ -24,5 +24,11 @@ class Todo:
   def get_todo(self):
     return self.text
   
+  def get_is_completed_text(self):
+    return 'completado' if self.is_completed else 'pendiente'
+  
   def get_is_completed(self):
     return self.is_completed
+  
+  def set_is_completed(self, is_completed):
+    self.is_completed = is_completed
