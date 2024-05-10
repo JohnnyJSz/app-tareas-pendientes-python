@@ -12,7 +12,6 @@ def add_new_todo(list):
       new_todo = Todo(new_todo_input)
       list.append(new_todo)
       print(f'\tLa tarea [{new_todo.get_todo()}] se ha añadido correctamente.')
-      show_all_todos(list)
 
 def modify_todo(list):
   #Lo primero mostrar la lista de tareas a modificar para una mejor seleccion
@@ -91,13 +90,29 @@ def delete_todo(list):
       except Exception as e:
         print('\tException: ',e)
 
-def show_all_todos(list):
-  if len(list) == 0:
-    print('\tNo hay tareas')
+def show_all_todos(list, is_static = False):
+  if is_static:
+    while True:
+      try:
+        show_all_todos(list)
+
+        exit_input = input('\t(presiona Enter para salir): ')
+
+        # Verificar si el usuario ha presionado Enter sin texto para salir
+        if exit_input.strip() == "":
+          break
+        else:
+          raise ValueError(f'Valor de índice "{exit_input}" no valido. Prueba otra vez.')
+      except ValueError as ve:
+        print('\tValueError: ',ve)
   else:
-    for index, todo in enumerate(list):
-      print(f'\t[{index}] {todo.get_todo()} - id({todo.get_id()}) - ({'completado' if todo.get_is_completed() == True else 'pendiente'})')
-      
+    if len(list) == 0:
+      print('\tNo hay tareas')
+    else:
+      for index, todo in enumerate(list):
+        print(f'\t[{index}] {todo.get_todo()} - id({todo.get_id()}) - ({'completado' if todo.get_is_completed() == True else 'pendiente'})')
+    
+
 def show_main_menu(list):
   print(' ** Menu de opciones **')
   if len(list) == 0:

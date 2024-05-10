@@ -17,7 +17,7 @@ def main():
     1: MenuOption('* Agregar una nueva tarea', lambda: add_new_todo(todo_list)),
     2: MenuOption('* Modificar una tarea', lambda: modify_todo(todo_list)),
     3: MenuOption('* Borrar una tarea', lambda: delete_todo(todo_list)),
-    4: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list)),
+    4: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list, True)),
   }
 
   while True:
@@ -56,8 +56,6 @@ def main():
     except Exception as e:
       print('Exception: ',e)
       input("Presiona Enter para continuar...")
-
-    # # Pausar para que el usuario pueda ver el mensaje antes de limpiar la pantalla
 
 if __name__ == '__main__':
   main()
