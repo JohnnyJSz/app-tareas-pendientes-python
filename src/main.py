@@ -16,8 +16,8 @@ def main():
   menu_option_switcher = {
     1: MenuOption('* Agregar una nueva tarea', lambda: add_new_todo(todo_list)),
     2: MenuOption('* Modificar una tarea', lambda: modify_todo(todo_list)),
-    3: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list)),
-    4: MenuOption('* Borrar una tarea', lambda: delete_todo(todo_list)),
+    3: MenuOption('* Borrar una tarea', lambda: delete_todo(todo_list)),
+    4: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list)),
   }
 
   while True:
