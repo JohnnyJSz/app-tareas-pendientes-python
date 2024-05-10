@@ -1,9 +1,18 @@
 from base import Todo
 
 def add_new_todo(list):
-    new_todo = Todo(input('\tIntroduce tu tarea: '))
-    list.append(new_todo)
-    print(f'\tLa tarea [{new_todo.get_todo()}] se ha añadido correctamente.')
+    while True:
+      new_todo_input = input('\tIntroduce tu tarea (o presiona Enter para salir): ')
+
+      # Verificar si el usuario ha presionado Enter sin texto
+      if new_todo_input.strip() == "":
+        break
+
+      # Crear una nueva tarea si el texto no está vacío
+      new_todo = Todo(new_todo_input)
+      list.append(new_todo)
+      print(f'\tLa tarea [{new_todo.get_todo()}] se ha añadido correctamente.')
+      show_all_todos(list)
 
 def modify_todo(list):
   #Lo primero mostrar la lista de tareas a modificar para una mejor seleccion
@@ -23,8 +32,6 @@ def modify_todo(list):
       
       # Verificar si el valor introducido es alfanumerico e igual a la cadena de texto 'salir'
       if index.isalpha() and index == 'salir':
-        # Si es asi, mostramos un mensaje informativo y salimos del bucle con break.
-        print('\tVolviendo al menu principal\n')
         break
       else:
         # Convertimos el índice a un tipo integer
@@ -62,8 +69,6 @@ def delete_todo(list):
         
         # Verificar si el valor introducido es alfanumerico e igual a la cadena de texto 'salir'
         if index.isalpha() and index == 'salir':
-          # Si es asi, mostramos un mensaje informativo y salimos del bucle con break.
-          print('\tVolviendo al menu principal\n')
           break
         else:
           # Convertimos el índice a un tipo integer
@@ -94,6 +99,7 @@ def show_all_todos(list):
       print(f'\t[{index}] {todo.get_todo()} - id({todo.get_id()}) - ({'completado' if todo.get_is_completed() == True else 'pendiente'})')
       
 def show_main_menu(list):
+  print(' ** Menu de opciones **')
   if len(list) == 0:
     print('''\t[1] - Agregar una nueva tarea
     \t[5] - Mostrar el menu principal
