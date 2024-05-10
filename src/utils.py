@@ -102,12 +102,10 @@ def show_main_menu(list):
   print(' ** Menu de opciones **')
   if len(list) == 0:
     print('''\t[1] - Agregar una nueva tarea
-    \t[5] - Mostrar el menu principal
     \t[salir] - Escribe "salir" para terminar el programa.''')
   else:
     print('''\t[1] - Agregar una nueva tarea
     \t[2] - Modificar una tarea
     \t[3] - Mostrar todas las tareas
     \t[4] - Eliminar una tarea
-    \t[5] - Mostrar el menu principal
     \t[salir] - Escribe "salir" para terminar el programa.''')
