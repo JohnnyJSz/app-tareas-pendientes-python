@@ -1,6 +1,6 @@
 import os
-from base import MenuOption, Todo
-from utils import add_new_todo, modify_todo, show_all_todos, delete_todo, show_main_menu
+from base import MenuOption, TodoManager
+from base import ROJO, VERDE, AMARILLO, AZUL, BOLD, ITALIC, RESET
 
 # Función para limpiar la pantalla
 def clear_screen():
@@ -10,23 +10,44 @@ def clear_screen():
     os.system('clear')  # Linux / macOS
 
 def main():
-  todo_list: Todo = list()
+  todo_manager = TodoManager()
 
   # Diccionario de opciones usando instancias de la clase MenuOption
   menu_option_switcher = {
-    1: MenuOption('* Agregar una nueva tarea', lambda: add_new_todo(todo_list)),
-    2: MenuOption('* Modificar una tarea', lambda: modify_todo(todo_list)),
-    3: MenuOption('* Borrar una tarea', lambda: delete_todo(todo_list)),
-    4: MenuOption('* Lista de tareas', lambda: show_all_todos(todo_list, True)),
+    1: MenuOption('Agregar una nueva tarea', todo_manager.add_new_todo),
+    2: MenuOption('Modificar una tarea', todo_manager.modify_todo),
+    3: MenuOption('Borrar una tarea', todo_manager.delete_todo),
+    4: MenuOption('Lista de tareas', lambda: todo_manager.show_all_todos(True))
   }
 
   while True:
     # Limpiar la pantalla y mostrar el menú principal
     clear_screen()
-    print('\t**** Bienvenido/a ****')
-    show_main_menu(todo_list)
+
+    print(f'{RESET}*' * 65)
+    print(''.ljust(25)+f'{AZUL}{BOLD}Gestor de Tareas{RESET}'+''.rjust(25))
+    print('*' * 65 + '\n')
+
+    print(f'{VERDE}-- {ITALIC}Menu de opciones --{RESET}')
+
+    available_options = [1]  # La opción de agregar siempre está disponible
+    if len(todo_manager.todo_list) > 0:
+      available_options.extend([2,3,4])
+      print(f'''
+      \t{AMARILLO}[1]{RESET} - Agregar una nueva tarea
+      \t{AMARILLO}[2]{RESET} - Modificar una tarea
+      \t{AMARILLO}[3]{RESET} - Eliminar una tarea
+      \t{AMARILLO}[4]{RESET} - Mostrar todas las tareas
+      \t{AMARILLO}[salir]{RESET} - Escribe {AMARILLO}salir{RESET} para terminar el programa.
+      ''')
+    else:
+      print(f'''
+      \t{AMARILLO}[1]{RESET} - Agregar una nueva tarea
+      \t{AMARILLO}[salir]{RESET} - Escribe {AMARILLO}salir{RESET} para terminar el programa.
+      ''')
+
     try:
-      option_selected = input('(Menu principal) Elige una opción: ')
+      option_selected = input(f'(Menu principal) Elige una opción: {AMARILLO}').strip().lower()
 
       # Verificar si el valor introducido es alfanumerico y distinto de la cadena de texto 'salir'
       if option_selected.isalpha() and option_selected != 'salir':
@@ -35,27 +56,28 @@ def main():
       # Verificar si el valor introducido es alfanumerico e igual a la cadena de texto 'salir'
       if option_selected.isalpha() and option_selected == 'salir':
         # Si es asi, mostramos un mensaje informativo y salimos del bucle con break.
-        print('Adiós!')
+        print(F'\n{RESET}{AZUL}-- Programa finalizado{RESET} ' + f'{AZUL}-{RESET}' * 43 + '\n')
         break
       else:
         option_selected = int(option_selected)
         
-        if option_selected in menu_option_switcher:
+        if option_selected in available_options:
           selected_option = menu_option_switcher[option_selected]
-          print(selected_option.get_label())
+          print(f'{selected_option.get_label()}\n')
+          # print(f'{RESET}{VERDE}{selected_option.get_label()}{RESET}\n')
           selected_option.execute_action()
         else:
           # si el índice no esta dentro del rango de índices de la lista de opciones entonces levantamos una excepcion IndexError
           raise IndexError(f'No hay opciones con índice {option_selected}. Prueba otra vez.')
     except ValueError as ve:
-      print('ValueError: ',ve)
-      input("Presiona Enter para continuar...")
+      print(f'{ROJO}ValueError: {ve}{RESET}')
+      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
     except IndexError as ie:
-      print('IndexError: ',ie)
-      input("Presiona Enter para continuar...")
+      print(f'{ROJO}IndexError: {ie}{RESET}')
+      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
     except Exception as e:
-      print('Exception: ',e)
-      input("Presiona Enter para continuar...")
+      print(f'{ROJO}Exception: {e}{RESET}')
+      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
 
 if __name__ == '__main__':
   main()
