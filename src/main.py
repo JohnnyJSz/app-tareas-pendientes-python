@@ -9,6 +9,11 @@ def clear_screen():
   else:
     os.system('clear')  # Linux / macOS
 
+def show_welcome_message():
+  print(f'{RESET}*' * 65)
+  print(''.ljust(25)+f'{AZUL}{BOLD}Gestor de Tareas{RESET}'+''.rjust(25))
+  print('*' * 65 + '\n')
+
 def main():
   todo_manager = TodoManager()
 
@@ -24,9 +29,7 @@ def main():
     # Limpiar la pantalla y mostrar el menú principal
     clear_screen()
 
-    print(f'{RESET}*' * 65)
-    print(''.ljust(25)+f'{AZUL}{BOLD}Gestor de Tareas{RESET}'+''.rjust(25))
-    print('*' * 65 + '\n')
+    show_welcome_message()
 
     print(f'{VERDE}-- {ITALIC}Menu de opciones --{RESET}')
 
@@ -64,7 +67,6 @@ def main():
         if option_selected in available_options:
           selected_option = menu_option_switcher[option_selected]
           print(f'{selected_option.get_label()}\n')
-          # print(f'{RESET}{VERDE}{selected_option.get_label()}{RESET}\n')
           selected_option.execute_action()
         else:
           # si el índice no esta dentro del rango de índices de la lista de opciones entonces levantamos una excepcion IndexError
