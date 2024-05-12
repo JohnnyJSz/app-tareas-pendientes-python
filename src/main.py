@@ -1,5 +1,7 @@
 import os
+# Import de clases
 from base import MenuOption, TodoManager
+# Import de colores para usar en los prints
 from base import ROJO, VERDE, AMARILLO, AZUL, BOLD, ITALIC, RESET
 
 # Función para limpiar la pantalla
@@ -66,7 +68,7 @@ def main():
         
         if option_selected in available_options:
           selected_option = menu_option_switcher[option_selected]
-          print(f'{selected_option.get_label()}\n')
+          print(f'{selected_option.get_formatted_label()}\n')
           selected_option.execute_action()
         else:
           # si el índice no esta dentro del rango de índices de la lista de opciones entonces levantamos una excepcion IndexError

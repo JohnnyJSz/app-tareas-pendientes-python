@@ -12,14 +12,47 @@ ITALIC = '\033[3m'
 RESET = "\033[0m"
 
 class MenuOption:
+  """
+    Representa una opción individual en un menú interactivo.
+    
+    Attributes:
+      label (str): Descripción de la opción, que se muestra en el menú.
+      action (callable): Función sin parámetros que se ejecuta cuando se selecciona esta opción.
+  """
   def __init__(self, label, action) -> None:
-    self.label = f'{RESET}{VERDE}\n-- {ITALIC}{label} --{RESET}'
+    """
+      Inicializa una nueva instancia de MenuOption con una etiqueta y una acción.
+      
+      Args:
+        label (str): El texto de la etiqueta para la opción del menú. Se espera que sea una cadena sin formato.
+        action (callable): La función que se llamará cuando esta opción del menú sea seleccionada.
+    """
+    self.formatted_label = f'{RESET}{VERDE}\n-- {ITALIC}{label} --{RESET}'
+    self.label = label
     self.action = action
   
   def get_label(self):
+    """
+      Devuelve la etiqueta sin formato, de la opción del menú.
+      
+      Returns:
+          str: La etiqueta de esta opción de menú.
+    """
     return self.label
   
+  def get_formatted_label(self):
+    """
+      Devuelve la etiqueta formateada de la opción del menú.
+      
+      Returns:
+          str: La etiqueta formateada de esta opción de menú.
+    """
+    return self.formatted_label
+  
   def execute_action(self):
+    """
+      Ejecuta la acción asociada con esta opción del menú.
+    """
     self.action()
 
 class TodoManager:
