@@ -169,18 +169,57 @@ class TodoManager:
           print(f'\t{ROJO}ValueError: {ve}{RESET}')
 
 class Todo:
+  """
+    Representa una tarea con un texto descriptivo y un estado de completado.
+
+    Attributes:
+      text (str): El texto de la tarea.
+      is_completed (bool): Verdadero si la tarea está completada, falso si está pendiente.
+  """
   def __init__(self, text, is_completed = False) -> None:
+    """
+      Inicializa una nueva tarea con texto y estado opcionalmente completado.
+
+      Args:
+        text (str): El texto que describe la tarea.
+        is_completed (bool, optional): Estado inicial de la tarea, verdadero si está completada. 
+        Por defecto es False.
+    """
     self.text = text
     self.is_completed = is_completed
   
   def get_todo(self):
+    """
+      Devuelve el texto de la tarea.
+
+      Returns:
+        str: El texto de la tarea.
+    """
     return self.text
   
   def get_is_completed_text(self):
+    """
+      Devuelve el estado de la tarea en formato textual.
+
+      Returns:
+        str: 'completado' si la tarea está completada, 'pendiente' si no lo está.
+    """
     return 'completado' if self.is_completed else 'pendiente'
   
   def get_is_completed(self):
+    """
+      Devuelve el estado de completado de la tarea.
+
+      Returns:
+          bool: Verdadero si la tarea está completada, falso si está pendiente.
+    """
     return self.is_completed
   
   def set_is_completed(self, is_completed):
+    """
+      Establece el estado de completado de la tarea.
+
+      Args:
+        is_completed (bool): Verdadero para marcar la tarea como completada, falso para marcarla como pendiente.
+    """
     self.is_completed = is_completed
