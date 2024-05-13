@@ -30,12 +30,11 @@ def main():
   while True:
     # Limpiar la pantalla y mostrar el menú principal
     clear_screen()
-
     show_welcome_message()
-
     print(f'{VERDE}-- {ITALIC}Menu de opciones --{RESET}')
 
-    available_options = [1]  # La opción de agregar siempre está disponible
+    # Si la lista no esta vacia, amplicar las opciones disponibles (por defecto solo la 1ra opcion esta disponible)
+    available_options = [1]
     if len(todo_manager.todo_list) > 0:
       available_options.extend([2,3,4])
       print(f'''
@@ -56,31 +55,33 @@ def main():
 
       # Verificar si el valor introducido es alfanumerico y distinto de la cadena de texto 'salir'
       if option_selected.isalpha() and option_selected != 'salir':
-        # Si es asi, levantamos una excepcion de tipo ValueError con un mensaje customizado
+        # Levantamos una excepcion de tipo ValueError con un mensaje customizado
         raise ValueError(f'Valor de índice "{option_selected}" no valido. Prueba otra vez.')
+      
       # Verificar si el valor introducido es alfanumerico e igual a la cadena de texto 'salir'
       if option_selected.isalpha() and option_selected == 'salir':
-        # Si es asi, mostramos un mensaje informativo y salimos del bucle con break.
+        # Salimos del bucle con break.
         print(F'\n{RESET}{AZUL}-- Programa finalizado{RESET} ' + f'{AZUL}-{RESET}' * 43 + '\n')
         break
+
+      option_selected = int(option_selected)
+      
+      # Si la opcion seleccionada esta entre las opciones disponibles, usamos el switcher para asignar
+      # a la variable opcion el objeto con label y action
+      if option_selected in available_options:
+        option = menu_option_switcher[option_selected]
+        print(f'{option.get_formatted_label()}\n')
+        option.execute_action()
       else:
-        option_selected = int(option_selected)
-        
-        if option_selected in available_options:
-          selected_option = menu_option_switcher[option_selected]
-          print(f'{selected_option.get_formatted_label()}\n')
-          selected_option.execute_action()
-        else:
-          # si el índice no esta dentro del rango de índices de la lista de opciones entonces levantamos una excepcion IndexError
-          raise IndexError(f'No hay opciones con índice {option_selected}. Prueba otra vez.')
+        # si el índice no esta dentro del rango de índices de la lista de opciones entonces levantamos una excepcion IndexError
+        raise IndexError(f'No hay opciones con índice {option_selected}. Prueba otra vez.')
     except ValueError as ve:
       print(f'{ROJO}ValueError: {ve}{RESET}')
-      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
     except IndexError as ie:
       print(f'{ROJO}IndexError: {ie}{RESET}')
-      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
     except Exception as e:
       print(f'{ROJO}Exception: {e}{RESET}')
+    finally: 
       input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
 
 if __name__ == '__main__':
