@@ -55,119 +55,6 @@ class MenuOption:
     """
     self.action()
 
-class TodoManager:
-  def __init__(self) -> None:
-    self.todo_list = list()
-  
-  def add_new_todo(self):
-    while True:
-      new_todo_input = input(f'\tIntroduce tu tarea (o presiona {AMARILLO}Enter{RESET} para salir): {AZUL}')
-
-      # Verificar si el usuario ha presionado Enter sin texto para salir
-      if new_todo_input.strip() == "":
-        break
-
-      # Crear una nueva tarea si el texto no está vacío
-      new_todo = Todo(new_todo_input)
-      self.todo_list.append(new_todo)
-      print(f'\t{VERDE}La tarea [{new_todo.get_todo()}] se ha añadido correctamente.{RESET}\n')
-
-  def modify_todo(self):
-    #Lo primero mostrar la lista de tareas a modificar para una mejor seleccion
-    self.show_all_todos()
-
-    # Uso un bucle con True para ejecutar el bloque las veces necesarias hasta llegar
-    # a una potencial salida usando break, que se dara cuando se consiga modificar una tarea.
-    while True:
-      try:
-        # Aqui el usuario tendra que introducir un indice de todo para modificarlo
-        index_input = input(f'\n\tIntroduce el índice de la tarea a modificar (o presiona {AMARILLO}Enter{RESET} para salir): {AMARILLO}')
-
-        # Verificar si el valor introducido es alfanumerico y distinto de la cadena de texto 'salir'
-        if index_input.isalpha():
-          # Si es asi, levantamos una excepcion de tipo ValueError con un mensaje customizado
-          raise ValueError(f'Valor de índice "{index_input}" no valido. Prueba otra vez.')
-        
-        # Verificar si el usuario ha presionado Enter sin texto para salir
-        if index_input.strip() == "":
-          break
-        else:
-          # Convertimos el índice a un tipo integer
-          list_index = int(index_input)
-      
-          # Verifica si el índice no esta dentro del rango de índices de la lista
-          if list_index < 0 or list_index >= len(self.todo_list):
-            # Si es asi, levantamos una excepcion de tipo IndexError con un mensaje customizado
-            raise IndexError(f'No hay tareas con índice {list_index}. Prueba otra vez.')
-          
-          todo = self.todo_list[list_index]
-          todo.set_is_completed(not(todo.get_is_completed()))
-
-          print(f'\t{VERDE}La tarea [{todo.get_todo()}] se ha actualizado a [{todo.get_is_completed_text()}] correctamente.{RESET}\n')
-          self.show_all_todos()
-      except ValueError as ve:
-        print(f'\t{ROJO}ValueError: {ve}{RESET}')
-      except IndexError as ie:
-        print(f'\t{ROJO}IndexError: {ie}{RESET}')
-      except Exception as e:
-        print(f'\t{ROJO}Exception: {e}{RESET}')
-
-  def delete_todo(self):
-    self.show_all_todos()
-    # Uso un bucle con True para ejecutar el bloque las veces necesarias hasta llegar
-    # a una potencial salida usando break, que se dara cuando se consiga borrar una tarea.
-    while True:
-      try:
-        index_input = input(f'\n\tIntroduce el índice de la tarea a eliminar (o presiona {AMARILLO}Enter{RESET} para salir): {AMARILLO}')
-
-        # Verificar si el valor introducido es alfanumerico y distinto de la cadena de texto 'salir'
-        if index_input.isalpha() and index_input != 'salir':
-          # Si es asi, levantamos una excepcion de tipo ValueError con un mensaje customizado
-          raise ValueError(f'Valor de índice "{index_input}" no valido. Prueba otra vez.')
-        
-        # Verificar si el usuario ha presionado Enter sin texto para salir
-        if index_input.strip() == "":
-          break
-        else:
-          # Convertimos el índice a un tipo integer
-          list_index = int(index_input)
-      
-          # Verifica si el índice no esta dentro del rango de índices de la lista
-          if list_index < 0 or list_index >= len(self.todo_list):
-            # Si es asi, levantamos una excepcion de tipo IndexError con un mensaje customizado
-            raise IndexError(f'No hay tareas con índice {list_index}. Prueba otra vez.')
-          
-          todo_text = self.todo_list[list_index].get_todo()
-          # Si el índice es correcto (existe un elemento en la lista con dicho índice), eliminarlo y salir.
-          self.todo_list.remove(self.todo_list[list_index])
-          print(f'\t{VERDE}La tarea [{todo_text}] se ha eliminado correctamente.{RESET}\n')
-          self.show_all_todos()
-      except ValueError as ve:
-        print(f'\t{ROJO}ValueError: {ve}{RESET}')
-      except IndexError as ie:
-        print(f'\t{ROJO}IndexError: {ie}{RESET}')
-      except Exception as e:
-        print(f'\t{ROJO}Exception: {e}{RESET}')
-
-  def show_all_todos(self, is_menu_option = False):
-    if len(self.todo_list) != 0:
-      for index, todo in enumerate(self.todo_list):
-        print(f'\t{AMARILLO}[{index}]{RESET} - {VERDE + 'completado'.ljust(10) + RESET if todo.get_is_completed() == True else ROJO + 'pendiente'.ljust(10) + RESET} - {AZUL}{todo.get_todo()}{RESET}')
-    else:
-      print(f'\t{AMARILLO}No hay tareas{RESET}')
-    if is_menu_option:
-      while True:
-        try:
-          exit_input = input(f'\n\t(presiona {AMARILLO}Enter{RESET} para salir)')
-
-          # Verificar si el usuario ha presionado Enter sin texto para salir
-          if exit_input.strip() == "":
-            break
-          else:
-            raise ValueError(f'Valor de índice "{exit_input}" no valido. Prueba otra vez.')
-        except ValueError as ve:
-          print(f'\t{ROJO}ValueError: {ve}{RESET}')
-
 class Todo:
   """
     Representa una tarea con un texto descriptivo y un estado de completado.
@@ -223,3 +110,136 @@ class Todo:
         is_completed (bool): Verdadero para marcar la tarea como completada, falso para marcarla como pendiente.
     """
     self.is_completed = is_completed
+
+class TodoManager:
+  """
+    Gestiona una lista de tareas, permitiendo agregar, modificar, eliminar y mostrar tareas.
+
+    Attributes:
+      todo_list (list): Lista que almacena instancias de objetos Todo.
+    """
+  def __init__(self) -> None:
+    """
+      Inicializa un nuevo TodoManager con una lista de tareas vacía.
+    """
+    self.todo_list = list()
+  
+  def add_new_todo(self):
+    """
+      Añade nuevas tareas a la lista hasta que el usuario decida salir.
+      El usuario introduce tareas por medio de la entrada estándar.
+    """
+    while True:
+      new_todo_input = input(f'\tIntroduce tu tarea (o presiona {AMARILLO}Enter{RESET} para salir): {AZUL}')
+
+      # Verificar si el usuario ha presionado Enter sin texto para salir
+      if new_todo_input.strip() == "":
+        break
+
+      # Crear una nueva tarea si el texto no está vacío
+      new_todo = Todo(new_todo_input)
+      self.todo_list.append(new_todo)
+      print(f'\t{VERDE}La tarea [{new_todo.get_todo()}] se ha añadido correctamente.{RESET}\n')
+
+  def modify_todo(self):
+    """
+      Permite al usuario modificar el estado de completado de una tarea existente.
+      Las tareas se listan y el usuario puede seleccionar una por su índice para modificarla.
+    """
+    # Mostrar la lista de tareas antes de modificarlas
+    self.show_all_todos()
+
+    while True:
+      try:
+        index_input = input(f'\n\tIntroduce el índice de la tarea a modificar (o presiona {AMARILLO}Enter{RESET} para salir): {AMARILLO}')
+
+        # Cuando el usuario introduce cualquier otro texto
+        if index_input.isalpha():
+          # Levantamos una excepcion de tipo ValueError con un mensaje customizado
+          raise ValueError(f'Valor de índice "{index_input}" no valido. Prueba otra vez.')
+        
+        # Cuando el usuario pulsa Enter
+        if index_input.strip() == "":
+          break
+
+        list_index = int(index_input)
+    
+        # Verifica si el índice introducido no esta dentro del rango de índices de la lista
+        if list_index < 0 or list_index >= len(self.todo_list):
+          # Levantamos una excepcion de tipo IndexError con un mensaje customizado
+          raise IndexError(f'No hay tareas con índice {list_index}. Prueba otra vez.')
+      
+        # Procedemos a modificar el valor, invirtiendo si es False to True y viceversa.
+        todo = self.todo_list[list_index]
+        todo.set_is_completed(not(todo.get_is_completed()))
+
+        print(f'\t{VERDE}La tarea [{todo.get_todo()}] se ha actualizado a [{todo.get_is_completed_text()}] correctamente.{RESET}\n')
+
+        self.show_all_todos()
+      except ValueError as ve:
+        print(f'\t{ROJO}ValueError: {ve}{RESET}')
+      except IndexError as ie:
+        print(f'\t{ROJO}IndexError: {ie}{RESET}')
+      except Exception as e:
+        print(f'\t{ROJO}Exception: {e}{RESET}')
+
+  def delete_todo(self):
+    """
+      Permite al usuario eliminar una tarea existente.
+      Las tareas se listan y el usuario puede seleccionar una por su índice para eliminarla.
+    """
+    self.show_all_todos()
+    while True:
+      try:
+        index_input = input(f'\n\tIntroduce el índice de la tarea a eliminar (o presiona {AMARILLO}Enter{RESET} para salir): {AMARILLO}')
+
+        if index_input.isalpha() and index_input != 'salir':
+          raise ValueError(f'Valor de índice "{index_input}" no valido. Prueba otra vez.')
+        
+        if index_input.strip() == "":
+          break
+
+        list_index = int(index_input)
+    
+        if list_index < 0 or list_index >= len(self.todo_list):
+          raise IndexError(f'No hay tareas con índice {list_index}. Prueba otra vez.')
+        
+        todo_text = self.todo_list[list_index].get_todo()
+
+        self.todo_list.remove(self.todo_list[list_index])
+        print(f'\t{VERDE}La tarea [{todo_text}] se ha eliminado correctamente.{RESET}\n')
+        self.show_all_todos()
+      except ValueError as ve:
+        print(f'\t{ROJO}ValueError: {ve}{RESET}')
+      except IndexError as ie:
+        print(f'\t{ROJO}IndexError: {ie}{RESET}')
+      except Exception as e:
+        print(f'\t{ROJO}Exception: {e}{RESET}')
+
+  def show_all_todos(self, is_menu_option = False):
+    """
+      Muestra todas las tareas en la lista.
+    
+      Args:
+        is_menu_option (bool): Si es True, significa que es parte de las opciones de menu principal 
+        y se añade una opcion que permite al usuario salir presionando Enter. Si es False simplemente
+        muestra la lista de tareas
+    """
+    if len(self.todo_list) != 0:
+      for index, todo in enumerate(self.todo_list):
+        print(f'\t{AMARILLO}[{index}]{RESET} - {VERDE + 'completado'.ljust(10) + RESET if todo.get_is_completed() == True else ROJO + 'pendiente'.ljust(10) + RESET} - {AZUL}{todo.get_todo()}{RESET}')
+    else:
+      print(f'\t{AMARILLO}No hay tareas{RESET}')
+    if is_menu_option:
+      while True:
+        try:
+          exit_input = input(f'\n\t(presiona {AMARILLO}Enter{RESET} para salir)')
+
+          if exit_input.strip() == "":
+            break
+          else:
+            raise ValueError(f'Valor de índice "{exit_input}" no valido. Prueba otra vez.')
+        except ValueError as ve:
+          print(f'\t{ROJO}ValueError: {ve}{RESET}')
+
+

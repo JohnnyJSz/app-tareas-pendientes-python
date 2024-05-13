@@ -77,11 +77,12 @@ def main():
         raise IndexError(f'No hay opciones con índice {option_selected}. Prueba otra vez.')
     except ValueError as ve:
       print(f'{ROJO}ValueError: {ve}{RESET}')
+      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
     except IndexError as ie:
       print(f'{ROJO}IndexError: {ie}{RESET}')
+      input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
     except Exception as e:
       print(f'{ROJO}Exception: {e}{RESET}')
-    finally: 
       input(f'Presiona {AMARILLO}Enter{RESET} para continuar.')
 
 if __name__ == '__main__':
