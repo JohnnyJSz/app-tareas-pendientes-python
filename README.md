@@ -12,3 +12,21 @@ la lista de tareas pendientes.
 El programa deberá incluir las siguientes características:
 - Manejo de excepciones: El programa deberá manejar excepciones en caso de que el usuario ingrese una opción no válida o una posición que no exista en la lista.
 - Comentarios explicativos: El código deberá estar comentado para explicar su funcionamiento en cada parte relevante.
+
+## Instalacion y ejecucion
+1. Clonar repositorio
+   ```
+    git clone https://github.com/JohnnyJSz/app-tareas-pendientes-python.git
+    cd app-tareas-pendientes-python
+   ```
+2. Navega a la carpeta 'src'
+   ```
+     cd src
+   ```
+3. Ejecuta el archivo 'main.py' para iniciar el programa
+   ```
+     python3 main.py
+   ```
+## Descripcion de los archivos
+- main.py: Es el archivo principal donde se ejecuta el programa.
+- base.py: Contiene funciones o clases auxiliares que son utilizadas por 'main.py'
